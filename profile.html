@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vanta — Profile</title>
+    <meta
+      name="description"
+      content="Vanta profile page for private payments and trust signals."
+    />
+
+    <style>
+      :root {
+        --bg: #050507;
+        --panel: rgba(255, 255, 255, 0.04);
+        --panel-strong: rgba(255, 255, 255, 0.06);
+        --line: rgba(255, 255, 255, 0.08);
+        --text: rgba(255, 255, 255, 0.94);
+        --muted: rgba(255, 255, 255, 0.62);
+        --soft: rgba(255, 255, 255, 0.03);
+        --accent: #d9dde3;
+        --accent-dark: #0a0b0d;
+        --success: #9ed7b5;
+        --radius: 24px;
+        --max: 1120px;
+        --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: var(--font);
+        color: var(--text);
+        background:
+          radial-gradient(900px 500px at 50% 0%, rgba(255, 255, 255, 0.05), transparent 60%),
+          var(--bg);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(14px);
+        background: rgba(5, 5, 7, 0.72);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .nav__inner,
+      .page,
+      .footer__inner {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .nav__inner {
+        height: 74px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+      }
+
+      .brand__mark {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #ffffff, #aeb4bc);
+        box-shadow: 0 0 24px rgba(255, 255, 255, 0.15);
+      }
+
+      .nav__right {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .page {
+        padding-top: 44px;
+        padding-bottom: 64px;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 14px;
+        margin-bottom: 22px;
+      }
+
+      .back-link:hover {
+        color: var(--text);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) 420px;
+        gap: 22px;
+        align-items: start;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: var(--radius);
+      }
+
+      .profile-card {
+        padding: 34px;
+      }
+
+      .profile-top {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .avatar {
+        width: 74px;
+        height: 74px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+        border: 1px solid var(--line);
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+      }
+
+      .profile-meta h1 {
+        margin: 0;
+        font-size: clamp(34px, 5vw, 54px);
+        line-height: 0.96;
+        letter-spacing: -0.06em;
+        font-weight: 700;
+      }
+
+      .handle {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .bio {
+        margin: 24px 0 0;
+        max-width: 640px;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.65;
+      }
+
+      .badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 24px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 36px;
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        background: var(--soft);
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .section-title {
+        margin: 34px 0 14px;
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .trust-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .trust-item {
+        border: 1px solid var(--line);
+        background: var(--soft);
+        border-radius: 20px;
+        padding: 18px;
+      }
+
+      .trust-item__value {
+        font-size: 28px;
+        letter-spacing: -0.05em;
+        font-weight: 700;
+      }
+
+      .trust-item__label {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .pay-card {
+        padding: 24px;
+        position: sticky;
+        top: 96px;
+      }
+
+      .eyebrow {
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .pay-title {
+        margin: 10px 0 0;
+        font-size: 30px;
+        line-height: 1.02;
+        letter-spacing: -0.05em;
+      }
+
+      .pay-sub {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      .amount-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 22px;
+      }
+
+      .amount-btn {
+        height: 54px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text);
+        cursor: pointer;
+        transition: 0.18s ease;
+      }
+
+      .amount-btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+
+      .amount-btn.is-active {
+        background: var(--accent);
+        color: var(--accent-dark);
+        border-color: transparent;
+        font-weight: 700;
+      }
+
+      .field {
+        margin-top: 14px;
+      }
+
+      .label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .input {
+        width: 100%;
+        height: 52px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text);
+        padding: 0 16px;
+        outline: none;
+      }
+
+      .input:focus {
+        border-color: rgba(255, 255, 255, 0.18);
+      }
+
+      .wallet-box {
+        margin-top: 18px;
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .wallet-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+
+      .wallet-name {
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .wallet-address {
+        font-size: 14px;
+        line-height: 1.6;
+        word-break: break-all;
+      }
+
+      .wallet-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .btn {
+        height: 46px;
+        padding: 0 18px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--text);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: 0.18s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+
+      .btn--primary {
+        background: var(--accent);
+        color: var(--accent-dark);
+        border-color: transparent;
+        font-weight: 700;
+      }
+
+      .selected {
+        margin-top: 18px;
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--line);
+      }
+
+      .selected__label {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .selected__amount {
+        margin-top: 6px;
+        font-size: 34px;
+        line-height: 1;
+        letter-spacing: -0.06em;
+        font-weight: 700;
+      }
+
+      .note {
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .mini-list {
+        margin-top: 18px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .mini-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 18px;
+      }
+
+      .mini-item__left {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .mini-item__title {
+        font-size: 14px;
+      }
+
+      .mini-item__meta {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .mini-item__status {
+        color: var(--success);
+        font-size: 12px;
+      }
+
+      .footer {
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .footer__inner {
+        padding-top: 22px;
+        padding-bottom: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: rgba(255, 255, 255, 0.42);
+        font-size: 13px;
+      }
+
+      .copied {
+        color: var(--success);
+      }
+
+      @media (max-width: 960px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .pay-card {
+          position: static;
+        }
+
+        .trust-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .nav__inner,
+        .page,
+        .footer__inner {
+          padding-left: 18px;
+          padding-right: 18px;
+        }
+
+        .profile-card,
+        .pay-card {
+          padding: 22px;
+        }
+
+        .profile-top {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .amount-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer__inner {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .wallet-actions {
+          flex-wrap: wrap;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="nav">
+      <div class="nav__inner">
+        <a href="./index.html" class="brand" aria-label="Vanta home">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <span>vanta</span>
+        </a>
+
+        <div class="nav__right">private payments</div>
+      </div>
+    </header>
+
+    <main class="page">
+      <a href="./index.html" class="back-link">← back to home</a>
+
+      <section class="hero">
+        <div class="card profile-card">
+          <div class="profile-top">
+            <div class="avatar">J</div>
+
+            <div class="profile-meta">
+              <h1>Janissa</h1>
+              <div class="handle">@janissa</div>
+            </div>
+          </div>
+
+          <p class="bio">
+            Private independent professional accepting discreet payments through Vanta.
+          </p>
+
+          <div class="badges">
+            <div class="badge">verified profile</div>
+            <div class="badge">accepting payments</div>
+            <div class="badge">non custodial</div>
+          </div>
+
+          <div class="section-title">trust signals</div>
+
+          <div class="trust-grid">
+            <div class="trust-item">
+              <div class="trust-item__value">24</div>
+              <div class="trust-item__label">successful payments</div>
+            </div>
+
+            <div class="trust-item">
+              <div class="trust-item__value">4.9</div>
+              <div class="trust-item__label">average trust score</div>
+            </div>
+
+            <div class="trust-item">
+              <div class="trust-item__value">0</div>
+              <div class="trust-item__label">active reports</div>
+            </div>
+          </div>
+
+          <div class="section-title">recent activity</div>
+
+          <div class="mini-list">
+            <div class="mini-item">
+              <div class="mini-item__left">
+                <div class="mini-item__title">payment received</div>
+                <div class="mini-item__meta">usdc on polygon</div>
+              </div>
+              <div class="mini-item__status">confirmed</div>
+            </div>
+
+            <div class="mini-item">
+              <div class="mini-item__left">
+                <div class="mini-item__title">profile verified</div>
+                <div class="mini-item__meta">identity check completed</div>
+              </div>
+              <div class="mini-item__status">active</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="card pay-card">
+          <div class="eyebrow">send payment</div>
+          <h2 class="pay-title">pay privately through vanta</h2>
+          <p class="pay-sub">
+            Choose an amount below or enter a custom amount. Payment goes directly to the connected wallet.
+          </p>
+
+          <div class="amount-grid">
+            <button class="amount-btn" data-amount="100">$100</button>
+            <button class="amount-btn" data-amount="300">$300</button>
+            <button class="amount-btn" data-amount="500">$500</button>
+            <button class="amount-btn" data-amount="1000">$1000</button>
+          </div>
+
+          <div class="field">
+            <label class="label" for="customAmount">custom amount</label>
+            <input
+              class="input"
+              id="customAmount"
+              type="number"
+              min="1"
+              step="1"
+              placeholder="enter amount in USD"
+            />
+          </div>
+
+          <div class="selected">
+            <div class="selected__label">selected amount</div>
+            <div class="selected__amount" id="selectedAmount">$300</div>
+          </div>
+
+          <div class="wallet-box">
+            <div class="wallet-top">
+              <div class="wallet-name">connected wallet · usdc on polygon</div>
+              <button class="btn" id="copyWalletBtn" type="button">copy</button>
+            </div>
+
+            <div class="wallet-address" id="walletAddress">
+              0x82F1D9B6A1C3E4F57290ABCD1234567890EFA321
+            </div>
+
+            <div class="wallet-actions">
+              <button class="btn btn--primary" type="button" id="payNowBtn">pay now</button>
+              <button class="btn" type="button" id="openWalletBtn">open wallet</button>
+            </div>
+          </div>
+
+          <div class="note" id="paymentNote">
+            demo flow only for now. later this will connect to a real non custodial wallet flow.
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__inner">
+        <div>vanta</div>
+        <div>payments go directly to the connected wallet</div>
+      </div>
+    </footer>
+
+    <script>
+      const amountButtons = document.querySelectorAll(".amount-btn");
+      const selectedAmount = document.getElementById("selectedAmount");
+      const customAmount = document.getElementById("customAmount");
+      const copyWalletBtn = document.getElementById("copyWalletBtn");
+      const walletAddress = document.getElementById("walletAddress");
+      const payNowBtn = document.getElementById("payNowBtn");
+      const openWalletBtn = document.getElementById("openWalletBtn");
+      const paymentNote = document.getElementById("paymentNote");
+
+      let currentAmount = 300;
+
+      function formatAmount(value) {
+        return `$${Number(value).toLocaleString("en-US")}`;
+      }
+
+      function updateAmount(value) {
+        currentAmount = value;
+        selectedAmount.textContent = formatAmount(value);
+      }
+
+      amountButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          amountButtons.forEach((btn) => btn.classList.remove("is-active"));
+          button.classList.add("is-active");
+          customAmount.value = "";
+          updateAmount(button.dataset.amount);
+        });
+      });
+
+      customAmount.addEventListener("input", () => {
+        amountButtons.forEach((btn) => btn.classList.remove("is-active"));
+
+        const value = Number(customAmount.value);
+
+        if (value > 0) {
+          updateAmount(value);
+        } else {
+          updateAmount(0);
+          selectedAmount.textContent = "$0";
+        }
+      });
+
+      copyWalletBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(walletAddress.textContent.trim());
+          copyWalletBtn.textContent = "copied";
+          copyWalletBtn.classList.add("copied");
+
+          setTimeout(() => {
+            copyWalletBtn.textContent = "copy";
+            copyWalletBtn.classList.remove("copied");
+          }, 1500);
+        } catch (error) {
+          copyWalletBtn.textContent = "failed";
+        }
+      });
+
+      payNowBtn.addEventListener("click", () => {
+        paymentNote.textContent = `next step later: initiate a non custodial payment request for ${formatAmount(currentAmount)} to the connected wallet`;
+      });
+
+      openWalletBtn.addEventListener("click", () => {
+        paymentNote.textContent = "next step later: open connected wallet or wallet deep link";
+      });
+
+      const defaultButton = document.querySelector('.amount-btn[data-amount="300"]');
+      if (defaultButton) {
+        defaultButton.classList.add("is-active");
+      }
+    </script>
+  </body>
+</html>
