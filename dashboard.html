@@ -183,7 +183,8 @@
 
       .input,
       .textarea,
-      .color-input {
+      .color-input,
+      .file-input {
         width: 100%;
         border-radius: 16px;
         border: 1px solid var(--line);
@@ -198,6 +199,10 @@
         padding: 0 16px;
       }
 
+      .file-input {
+        padding: 14px 16px;
+      }
+
       .textarea {
         min-height: 120px;
         padding: 14px 16px;
@@ -206,7 +211,8 @@
 
       .input:focus,
       .textarea:focus,
-      .color-input:focus {
+      .color-input:focus,
+      .file-input:focus {
         border-color: rgba(255, 255, 255, 0.18);
       }
 
@@ -459,7 +465,12 @@
             </div>
 
             <div class="field full">
-              <label class="label" for="avatarUrl">profile picture url</label>
+              <label class="label" for="avatarUpload">upload profile picture</label>
+              <input class="file-input" id="avatarUpload" type="file" accept="image/*" />
+            </div>
+
+            <div class="field full">
+              <label class="label" for="avatarUrl">or use profile picture url</label>
               <input class="input" id="avatarUrl" type="text" placeholder="https://..." />
             </div>
           </div>
@@ -575,6 +586,7 @@
       const displayNameInput = document.getElementById("displayName");
       const usernameInput = document.getElementById("username");
       const bioInput = document.getElementById("bio");
+      const avatarUploadInput = document.getElementById("avatarUpload");
       const avatarUrlInput = document.getElementById("avatarUrl");
       const accentColorInput = document.getElementById("accentColor");
       const walletAddressInput = document.getElementById("walletAddress");
@@ -595,6 +607,8 @@
       const previewAmount2 = document.getElementById("previewAmount2");
       const previewAmount3 = document.getElementById("previewAmount3");
       const previewAmount4 = document.getElementById("previewAmount4");
+
+      let uploadedAvatarData = "";
 
       function getStoredProfile() {
         const saved = localStorage.getItem(STORAGE_KEY);
@@ -620,7 +634,8 @@
         displayNameInput.value = profile.displayName;
         usernameInput.value = profile.username;
         bioInput.value = profile.bio;
-        avatarUrlInput.value = profile.avatarUrl;
+        avatarUrlInput.value = profile.avatarUrl && !profile.avatarUrl.startsWith("data:") ? profile.avatarUrl : "";
+        uploadedAvatarData = profile.avatarUrl && profile.avatarUrl.startsWith("data:") ? profile.avatarUrl : "";
         accentColorInput.value = profile.accentColor;
         walletAddressInput.value = profile.walletAddress;
         amount1Input.value = profile.amounts[0];
@@ -630,11 +645,14 @@
       }
 
       function readForm() {
+        const manualUrl = avatarUrlInput.value.trim();
+        const finalAvatar = manualUrl || uploadedAvatarData || "";
+
         return {
           displayName: displayNameInput.value.trim() || defaultProfile.displayName,
           username: usernameInput.value.trim().replace(/^@/, "") || defaultProfile.username,
           bio: bioInput.value.trim() || defaultProfile.bio,
-          avatarUrl: avatarUrlInput.value.trim(),
+          avatarUrl: finalAvatar,
           accentColor: accentColorInput.value || defaultProfile.accentColor,
           walletAddress: walletAddressInput.value.trim() || defaultProfile.walletAddress,
           amounts: [
@@ -680,11 +698,27 @@
       }
 
       function resetProfile() {
+        uploadedAvatarData = "";
+        avatarUploadInput.value = "";
         localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultProfile));
         loadIntoForm(defaultProfile);
         updatePreview(defaultProfile);
         statusText.textContent = "demo profile reset";
       }
+
+      avatarUploadInput.addEventListener("change", (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          uploadedAvatarData = reader.result;
+          avatarUrlInput.value = "";
+          updatePreview(readForm());
+          statusText.textContent = "image selected not yet saved";
+        };
+        reader.readAsDataURL(file);
+      });
 
       const liveFields = [
         displayNameInput,
