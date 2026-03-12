@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ravelle — Private Members Marketplace</title>
+    <title>Vanta — Private Payments and Trust Infrastructure</title>
     <meta
       name="description"
-      content="Ravelle is a private, members-only marketplace connecting verified clients with independent companions."
+      content="Vanta is a private payment and trust platform for independent professionals and their clients."
     />
 
     <style>
@@ -17,8 +17,8 @@
         --text: rgba(255, 255, 255, 0.92);
         --muted: rgba(255, 255, 255, 0.65);
         --line: rgba(255, 255, 255, 0.12);
-        --accent: #b30d2f;
-        --accent2: #ff2b58;
+        --accent: #8a8f98;
+        --accent2: #d4d7dc;
         --radius: 18px;
         --shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
         --max: 1120px;
@@ -36,8 +36,8 @@
 
       body {
         margin: 0;
-        background: radial-gradient(1200px 700px at 60% 10%, rgba(179, 13, 47, 0.22), transparent 60%),
-          radial-gradient(900px 600px at 25% 20%, rgba(255, 43, 88, 0.12), transparent 55%), var(--bg);
+        background: radial-gradient(1200px 700px at 60% 10%, rgba(138, 143, 152, 0.18), transparent 60%),
+          radial-gradient(900px 600px at 25% 20%, rgba(212, 215, 220, 0.08), transparent 55%), var(--bg);
         color: var(--text);
         font-family: var(--font);
       }
@@ -81,7 +81,7 @@
         height: 14px;
         border-radius: 999px;
         background: linear-gradient(135deg, var(--accent), var(--accent2));
-        box-shadow: 0 0 24px rgba(255, 43, 88, 0.35);
+        box-shadow: 0 0 24px rgba(212, 215, 220, 0.18);
       }
 
       .brand__name {
@@ -141,6 +141,8 @@
       .btn--primary {
         background: linear-gradient(135deg, var(--accent), var(--accent2));
         border-color: transparent;
+        color: #0a0a0d;
+        font-weight: 700;
       }
 
       .btn--ghost {
@@ -310,7 +312,7 @@
       .mock__btn {
         height: 38px;
         border-radius: 999px;
-        background: linear-gradient(135deg, rgba(179, 13, 47, 0.9), rgba(255, 43, 88, 0.9));
+        background: linear-gradient(135deg, rgba(138, 143, 152, 0.92), rgba(212, 215, 220, 0.92));
       }
 
       .glow {
@@ -318,7 +320,7 @@
         inset: -80px -50px auto auto;
         width: 300px;
         height: 300px;
-        background: radial-gradient(circle, rgba(255, 43, 88, 0.28), transparent 65%);
+        background: radial-gradient(circle, rgba(212, 215, 220, 0.16), transparent 65%);
         filter: blur(10px);
         pointer-events: none;
       }
@@ -390,160 +392,6 @@
         font-size: 14px;
       }
 
-      .faq {
-        display: grid;
-        gap: 10px;
-        margin-top: 12px;
-      }
-
-      details {
-        border: 1px solid var(--line);
-        border-radius: var(--radius);
-        background: rgba(255, 255, 255, 0.03);
-        padding: 12px 14px;
-      }
-
-      summary {
-        cursor: pointer;
-        font-weight: 800;
-        text-transform: lowercase;
-        outline: none;
-      }
-
-      details p {
-        margin: 10px 0 0;
-        color: var(--muted);
-        line-height: 1.6;
-        font-size: 14px;
-      }
-
-      .final {
-        padding: 54px 0 64px;
-        border-top: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.02);
-      }
-
-      .final__inner {
-        max-width: var(--max);
-        margin: 0 auto;
-        padding: 0 18px;
-        text-align: center;
-      }
-
-      .final__inner p {
-        color: var(--muted);
-        margin: 8px auto 16px;
-        max-width: 62ch;
-        line-height: 1.6;
-      }
-
-      .tiny {
-        margin-top: 16px;
-        color: rgba(255, 255, 255, 0.45);
-        font-size: 12px;
-      }
-
-      /* modal */
-      .modal {
-        position: fixed;
-        inset: 0;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 18px;
-        background: rgba(0, 0, 0, 0.65);
-        backdrop-filter: blur(8px);
-        z-index: 200;
-      }
-
-      .modal.is-open {
-        display: flex;
-      }
-
-      .modal__panel {
-        width: min(560px, 100%);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        border-radius: calc(var(--radius) + 10px);
-        background: rgba(7, 7, 10, 0.82);
-        box-shadow: var(--shadow);
-        overflow: hidden;
-      }
-
-      .modal__head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 14px 16px;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .modal__title {
-        font-weight: 900;
-        letter-spacing: 0.1px;
-        text-transform: lowercase;
-      }
-
-      .modal__close {
-        width: 36px;
-        height: 36px;
-        border-radius: 999px;
-        border: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.03);
-        color: var(--text);
-        cursor: pointer;
-        font-size: 18px;
-        line-height: 0;
-      }
-
-      .modal__body {
-        padding: 16px;
-      }
-
-      .field {
-        display: grid;
-        gap: 6px;
-        margin-top: 12px;
-      }
-
-      .label {
-        color: var(--muted);
-        font-size: 13px;
-        text-transform: lowercase;
-      }
-
-      .input,
-      .select {
-        height: 44px;
-        border-radius: 12px;
-        border: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.03);
-        color: var(--text);
-        padding: 0 12px;
-        outline: none;
-      }
-
-      .input:focus,
-      .select:focus {
-        border-color: rgba(255, 255, 255, 0.22);
-      }
-
-      .modal__footer {
-        display: flex;
-        gap: 10px;
-        justify-content: flex-end;
-        padding: 14px 16px;
-        border-top: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.02);
-      }
-
-      .note {
-        color: rgba(255, 255, 255, 0.55);
-        font-size: 12px;
-        line-height: 1.5;
-        margin-top: 10px;
-      }
-
-      /* responsive */
       @media (min-width: 900px) {
         .nav__links {
           display: flex;
@@ -581,12 +429,12 @@
       <div class="nav__inner">
         <div class="brand">
           <div class="brand__mark" aria-hidden="true"></div>
-          <div class="brand__name">ravelle</div>
+          <div class="brand__name">vanta</div>
         </div>
 
         <nav class="nav__links" aria-label="primary">
           <a href="#how">how it works</a>
-          <a href="#safety">safety</a>
+          <a href="#trust">trust</a>
           <a href="#faq">faq</a>
         </nav>
 
@@ -601,11 +449,11 @@
       <section class="hero">
         <div class="hero__inner">
           <div class="hero__content">
-            <div class="pill">members only • verified access • discreet</div>
-            <h1>the private marketplace for independent companions and verified clients</h1>
+            <div class="pill">private payments • trust infrastructure • discreet by design</div>
+            <h1>private payments and trust infrastructure for independent professionals</h1>
             <p class="sub">
-              ravelle makes booking simple, professional, and safer — with identity checks, clear boundaries, and
-              messaging built for discretion.
+              vanta helps independent professionals get paid privately, verify trust signals, and manage client
+              interactions with more discretion and control.
             </p>
 
             <div class="cta">
@@ -615,16 +463,16 @@
 
             <div class="trust">
               <div class="trust__item">
-                <div class="trust__kpi">verified</div>
-                <div class="trust__label">client access</div>
+                <div class="trust__kpi">private</div>
+                <div class="trust__label">payment links</div>
               </div>
               <div class="trust__item">
-                <div class="trust__kpi">private</div>
-                <div class="trust__label">profiles & messaging</div>
+                <div class="trust__kpi">trusted</div>
+                <div class="trust__label">reputation signals</div>
               </div>
               <div class="trust__item">
                 <div class="trust__kpi">control</div>
-                <div class="trust__label">boundaries & rules</div>
+                <div class="trust__label">your business your rules</div>
               </div>
             </div>
           </div>
@@ -637,13 +485,13 @@
                 <div class="dot"></div>
               </div>
               <div class="card__body">
-                <div class="mock__title">ravelle access</div>
+                <div class="mock__title">vanta link</div>
                 <div class="mock__row">
-                  <div class="mock__badge">client</div>
+                  <div class="mock__badge">payment</div>
                   <div class="mock__line"></div>
                 </div>
                 <div class="mock__row">
-                  <div class="mock__badge">companion</div>
+                  <div class="mock__badge">trust</div>
                   <div class="mock__line"></div>
                 </div>
                 <div class="mock__divider"></div>
@@ -665,38 +513,38 @@
 
           <div class="grid3">
             <div class="box">
-              <div class="box__title">1. apply</div>
-              <p>create a profile and choose your role. companions set boundaries. clients verify identity.</p>
+              <div class="box__title">1. create your profile</div>
+              <p>set up your public payment page and choose how you want to present your business.</p>
             </div>
             <div class="box">
-              <div class="box__title">2. match</div>
-              <p>browse privately, request availability, and message with built-in discretion tools.</p>
+              <div class="box__title">2. share your link</div>
+              <p>send a clean private vanta link instead of raw wallet addresses or scattered payment instructions.</p>
             </div>
             <div class="box">
-              <div class="box__title">3. book</div>
-              <p>confirm expectations clearly. keep everything organized in one place — no chaos, no guessing.</p>
+              <div class="box__title">3. get paid with confidence</div>
+              <p>accept payments, view trust signals, and keep everything organized in one place.</p>
             </div>
           </div>
 
           <div class="split">
             <div class="box">
-              <h3>for companions</h3>
+              <h3>for professionals</h3>
               <ul>
-                <li>boundaries & rules upfront</li>
-                <li>screening-friendly flow</li>
-                <li>private profile controls</li>
-                <li>reporting & block tools</li>
+                <li>private payment links</li>
+                <li>discreet transaction flow</li>
+                <li>trust and reputation tools</li>
+                <li>simple client management</li>
               </ul>
-              <button class="btn btn--ghost" id="btnCompanion">I’m a companion</button>
+              <button class="btn btn--ghost" id="btnProfessional">I’m a professional</button>
             </div>
 
             <div class="box">
               <h3>for clients</h3>
               <ul>
-                <li>verified access</li>
-                <li>discreet communication</li>
-                <li>clear booking expectations</li>
-                <li>fast scheduling</li>
+                <li>clean payment experience</li>
+                <li>faster checkout flow</li>
+                <li>clear trust signals</li>
+                <li>more discretion</li>
               </ul>
               <button class="btn btn--ghost" id="btnClient">I’m a client</button>
             </div>
@@ -704,10 +552,26 @@
         </div>
       </section>
 
-      <section class="section" id="safety">
+      <section class="section" id="trust">
         <div class="section__inner">
-          <h2>safety by design</h2>
+          <h2>trust by design</h2>
+
           <div class="grid3">
             <div class="box">
-              <div class="box__title">verification layers
-::contentReference[oaicite:0]{index=0}
+              <div class="box__title">reputation signals</div>
+              <p>see useful trust indicators before sending or accepting payments.</p>
+            </div>
+            <div class="box">
+              <div class="box__title">private by default</div>
+              <p>designed for discretion with cleaner payment links and less exposed personal information.</p>
+            </div>
+            <div class="box">
+              <div class="box__title">professional control</div>
+              <p>set your own terms, payment options, and preferences in one place.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
