@@ -543,7 +543,7 @@
           <div class="avatar-editor">
             <label class="avatar-upload" for="avatarUpload" aria-label="Change profile picture">
               <span class="avatar-upload__initial" id="avatarEditorInitial">J</span>
-              <img id="avatarEditorImg" alt="Current profile picture" />
+              <img id="avatarEditorImg" alt="" />
               <div class="avatar-upload__overlay">change</div>
             </label>
 
@@ -636,7 +636,7 @@
             <div class="preview-top">
               <div class="preview-avatar">
                 <span id="previewInitial">J</span>
-                <img id="previewAvatarImg" alt="Profile preview" />
+                <img id="previewAvatarImg" alt="" />
               </div>
 
               <div>
@@ -720,6 +720,7 @@
       const avatarEditorImg = document.getElementById("avatarEditorImg");
 
       let uploadedAvatarData = "";
+      let temporaryPreviewUrl = "";
 
       function getStoredProfile() {
         const saved = localStorage.getItem(STORAGE_KEY);
@@ -732,7 +733,7 @@
             ...parsed,
             amounts: Array.isArray(parsed.amounts) ? parsed.amounts : defaultProfile.amounts
           };
-        } catch {
+        } catch (error) {
           return { ...defaultProfile };
         }
       }
@@ -742,28 +743,34 @@
       }
 
       function loadIntoForm(profile) {
-        displayNameInput.value = profile.displayName;
-        usernameInput.value = profile.username;
-        bioInput.value = profile.bio;
-        avatarUrlInput.value = profile.avatarUrl && !profile.avatarUrl.startsWith("data:") ? profile.avatarUrl : "";
-        uploadedAvatarData = profile.avatarUrl && profile.avatarUrl.startsWith("data:") ? profile.avatarUrl : "";
-        accentColorInput.value = profile.accentColor;
-        walletAddressInput.value = profile.walletAddress;
-        amount1Input.value = profile.amounts[0];
-        amount2Input.value = profile.amounts[1];
-        amount3Input.value = profile.amounts[2];
-        amount4Input.value = profile.amounts[3];
+        displayNameInput.value = profile.displayName || defaultProfile.displayName;
+        usernameInput.value = profile.username || defaultProfile.username;
+        bioInput.value = profile.bio || defaultProfile.bio;
+
+        const savedAvatar = profile.avatarUrl || "";
+        const isDataUrl = savedAvatar.startsWith("data:");
+        avatarUrlInput.value = !isDataUrl ? savedAvatar : "";
+        uploadedAvatarData = isDataUrl ? savedAvatar : "";
+
+        accentColorInput.value = profile.accentColor || defaultProfile.accentColor;
+        walletAddressInput.value = profile.walletAddress || defaultProfile.walletAddress;
+        amount1Input.value = profile.amounts?.[0] ?? defaultProfile.amounts[0];
+        amount2Input.value = profile.amounts?.[1] ?? defaultProfile.amounts[1];
+        amount3Input.value = profile.amounts?.[2] ?? defaultProfile.amounts[2];
+        amount4Input.value = profile.amounts?.[3] ?? defaultProfile.amounts[3];
+      }
+
+      function getAvatarValue() {
+        const manualUrl = avatarUrlInput.value.trim();
+        return manualUrl || uploadedAvatarData || "";
       }
 
       function readForm() {
-        const manualUrl = avatarUrlInput.value.trim();
-        const finalAvatar = manualUrl || uploadedAvatarData || "";
-
         return {
           displayName: displayNameInput.value.trim() || defaultProfile.displayName,
           username: usernameInput.value.trim().replace(/^@/, "") || defaultProfile.username,
           bio: bioInput.value.trim() || defaultProfile.bio,
-          avatarUrl: finalAvatar,
+          avatarUrl: getAvatarValue(),
           accentColor: accentColorInput.value || defaultProfile.accentColor,
           walletAddress: walletAddressInput.value.trim() || defaultProfile.walletAddress,
           amounts: [
@@ -775,31 +782,28 @@
         };
       }
 
-      function applyAvatarToEditor(profile) {
-        const initial = profile.displayName.charAt(0).toUpperCase() || "V";
-        avatarEditorInitial.textContent = initial;
+      function setAvatar(imgEl, initialEl, avatarSrc, initialChar) {
+        if (avatarSrc) {
+          imgEl.onload = () => {
+            imgEl.style.display = "block";
+            initialEl.style.display = "none";
+          };
 
-        if (profile.avatarUrl) {
-          avatarEditorImg.src = profile.avatarUrl;
-          avatarEditorImg.style.display = "block";
-          avatarEditorInitial.style.display = "none";
+          imgEl.onerror = () => {
+            imgEl.removeAttribute("src");
+            imgEl.style.display = "none";
+            initialEl.style.display = "flex";
+            initialEl.textContent = initialChar;
+          };
+
+          imgEl.src = avatarSrc;
         } else {
-          avatarEditorImg.style.display = "none";
-          avatarEditorInitial.style.display = "flex";
-        }
-      }
-
-      function applyAvatarToPreview(profile) {
-        const initial = profile.displayName.charAt(0).toUpperCase() || "V";
-        previewInitial.textContent = initial;
-
-        if (profile.avatarUrl) {
-          previewAvatarImg.src = profile.avatarUrl;
-          previewAvatarImg.style.display = "block";
-          previewInitial.style.display = "none";
-        } else {
-          previewAvatarImg.style.display = "none";
-          previewInitial.style.display = "block";
+          imgEl.onload = null;
+          imgEl.onerror = null;
+          imgEl.removeAttribute("src");
+          imgEl.style.display = "none";
+          initialEl.style.display = "flex";
+          initialEl.textContent = initialChar;
         }
       }
 
@@ -818,20 +822,38 @@
           el.style.background = accent;
         });
 
-        applyAvatarToEditor(profile);
-        applyAvatarToPreview(profile);
+        const initial = profile.displayName.charAt(0).toUpperCase() || "V";
+        const avatarToShow = temporaryPreviewUrl || profile.avatarUrl || "";
+
+        avatarEditorInitial.textContent = initial;
+        previewInitial.textContent = initial;
+
+        setAvatar(avatarEditorImg, avatarEditorInitial, avatarToShow, initial);
+        setAvatar(previewAvatarImg, previewInitial, avatarToShow, initial);
       }
 
       function saveProfile() {
         const profile = readForm();
         localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+
+        if (temporaryPreviewUrl) {
+          URL.revokeObjectURL(temporaryPreviewUrl);
+          temporaryPreviewUrl = "";
+        }
+
         updatePreview(profile);
         statusText.textContent = "profile saved locally";
       }
 
       function resetProfile() {
+        if (temporaryPreviewUrl) {
+          URL.revokeObjectURL(temporaryPreviewUrl);
+          temporaryPreviewUrl = "";
+        }
+
         uploadedAvatarData = "";
         avatarUploadInput.value = "";
+        avatarUrlInput.value = "";
         localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultProfile));
         loadIntoForm(defaultProfile);
         updatePreview(defaultProfile);
@@ -842,17 +864,30 @@
         const file = event.target.files?.[0];
         if (!file) return;
 
+        if (temporaryPreviewUrl) {
+          URL.revokeObjectURL(temporaryPreviewUrl);
+          temporaryPreviewUrl = "";
+        }
+
+        temporaryPreviewUrl = URL.createObjectURL(file);
+        avatarUrlInput.value = "";
+
         const reader = new FileReader();
         reader.onload = () => {
-          uploadedAvatarData = reader.result;
-          avatarUrlInput.value = "";
-          updatePreview(readForm());
-          statusText.textContent = "image selected not yet saved";
+          uploadedAvatarData = typeof reader.result === "string" ? reader.result : "";
         };
         reader.readAsDataURL(file);
+
+        updatePreview(readForm());
+        statusText.textContent = "image selected not yet saved";
       });
 
       removePhotoBtn.addEventListener("click", () => {
+        if (temporaryPreviewUrl) {
+          URL.revokeObjectURL(temporaryPreviewUrl);
+          temporaryPreviewUrl = "";
+        }
+
         uploadedAvatarData = "";
         avatarUploadInput.value = "";
         avatarUrlInput.value = "";
@@ -875,6 +910,13 @@
 
       liveFields.forEach((field) => {
         field.addEventListener("input", () => {
+          if (field === avatarUrlInput && avatarUrlInput.value.trim()) {
+            if (temporaryPreviewUrl) {
+              URL.revokeObjectURL(temporaryPreviewUrl);
+              temporaryPreviewUrl = "";
+            }
+          }
+
           updatePreview(readForm());
           statusText.textContent = "unsaved changes";
         });
